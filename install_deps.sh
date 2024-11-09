@@ -47,8 +47,10 @@ elif [[ "$OSTYPE" == "cygwin" ]]; then
         # POSIX compatibility layer and Linux environment emulation for Windows
         ICU_CONFIG="Cygwin"
         LIB_INSTALL="windows"
-#elif [[ "$OSTYPE" == "msys" ]]; then
+elif [[ "$OSTYPE" == "msys" ]]; then
         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+        ICU_CONFIG="MinGW"
+        LIB_INSTALL="windows"
 #elif [[ "$OSTYPE" == "win32" ]]; then
         # I'm not sure this can happen.
 #elif [[ "$OSTYPE" == "freebsd"* ]]; then
@@ -144,7 +146,11 @@ cp libs/image/zlib/src/libzlib.a libs/image/zlib/$LIB_INSTALL/$ARCH/
 cp libs/image/png/src/libpng.a libs/image/png/$LIB_INSTALL/$ARCH/
 cp $DEP_INSTALL_DIR/freetype-2.9/_build/libfreetype.a libs/freetype/$LIB_INSTALL/$ARCH/
 cp $DEP_INSTALL_DIR/libxml2-2.9.8/.libs/libxml2.a libs/libxml/$LIB_INSTALL/$ARCH/
-if [[ "$OSTYPE" == "cygwin" ]]; then
+if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
+mv $DEP_INSTALL_DIR/icu/source/lib/libsicuuc.a $DEP_INSTALL_DIR/icu/source/lib/libicuuc.a
+mv $DEP_INSTALL_DIR/icu/source/lib/libsicudata.a $DEP_INSTALL_DIR/icu/source/lib/libicudata.a
+fi
+if [[ "$OSTYPE" == "msys" ]]; then
 mv $DEP_INSTALL_DIR/icu/source/lib/libsicuuc.a $DEP_INSTALL_DIR/icu/source/lib/libicuuc.a
 mv $DEP_INSTALL_DIR/icu/source/lib/libsicudata.a $DEP_INSTALL_DIR/icu/source/lib/libicudata.a
 fi
